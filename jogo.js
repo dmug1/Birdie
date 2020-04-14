@@ -43,6 +43,11 @@ const flappyBird ={
     posicaoy:50,
     velocidade: 0,
     gravidade:0.25,
+    pulo: 4.6,
+    pula(){
+        console.log('Pulinho do Raul Gil');
+        flappyBird.velocidade = -flappyBird.pulo;
+    },
     atualiza() {
         flappyBird.velocidade = flappyBird.velocidade + flappyBird.gravidade;
         flappyBird.posicaoy = flappyBird.posicaoy + flappyBird.velocidade;
@@ -134,6 +139,9 @@ const Telas = {
             planoDeFundo.desenha();
             chao.desenha();
             flappyBird.desenha(); 
+        },
+        click(){
+            flappyBird.pula();
         },
         atualiza(){       
             flappyBird.atualiza();
