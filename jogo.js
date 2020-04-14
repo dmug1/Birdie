@@ -41,6 +41,12 @@ const flappyBird ={
     altura:24,
     posicaox:10,
     posicaoy:50,
+    velocidade: 0,
+    gravidade:0.25,
+    atualiza() {
+        flappyBird.velocidade = flappyBird.velocidade + flappyBird.gravidade;
+        flappyBird.posicaoy = flappyBird.posicaoy + flappyBird.velocidade;
+    },    
     desenha(){        
         contexto.drawImage(
             sprites,
@@ -79,13 +85,75 @@ const planoDeFundo = {
     },
 }
 
+// starting game
+const menssagemGetReady = {
+    spriteX:134,
+    spriteY:0,
+    largura:210,
+    altura:192,
+    posicaox:(canvas.width / 2) - 174/2,
+    posicaoy:50,
+    desenha() {
+        contexto.drawImage(
+            sprites,
+            menssagemGetReady.spriteX, menssagemGetReady.spriteY,
+            menssagemGetReady.largura, menssagemGetReady.altura, 
+            menssagemGetReady.posicaox, menssagemGetReady.posicaoy, // Sprite x e Sprite Y
+            menssagemGetReady.largura, menssagemGetReady.altura,
+
+        );
+    }
+}
+
+
+/// [TELAS / SCREENS]
+let telaAtiva = {};
+function mudaParaTela(novaTela){
+    telaAtiva = novaTela;
+};
+
+const Telas = {
+    INICIO: {
+        desenha(){
+            planoDeFundo.desenha();
+            chao.desenha();
+            flappyBird.desenha(); 
+            menssagemGetReady.desenha();
+        },
+        click(){
+            mudaParaTela(Telas.JOGO)
+        },
+        atualiza(){
+
+        }
+
+    },
+
+    JOGO: {
+        desenha(){
+            planoDeFundo.desenha();
+            chao.desenha();
+            flappyBird.desenha(); 
+        },
+        atualiza(){       
+            flappyBird.atualiza();
+        }
+    }
+
+}
 
 function loopAnimation() {
-    planoDeFundo.desenha();
-    chao.desenha();
-    flappyBird.desenha();    
+    telaAtiva.desenha();
+    telaAtiva.atualiza();
 
     requestAnimationFrame(loopAnimation);
 };
 
+window.addEventListener('click', function(){
+    if(telaAtiva.click){
+        telaAtiva.click();
+    }
+});
+
+mudaParaTela(Telas.INICIO)
 loopAnimation();
