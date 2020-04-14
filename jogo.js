@@ -1,7 +1,3 @@
-console.log('[DevSoutinho] Flappy Bird');
-console.log('Inscreva-se no canal :D https://www.youtube.com/channel/UCzR2u5RWXWjUh7CwLSvbitA');
-console.log('Canal top me ensinou mt')
-
 const sprites = new Image();
 sprites.src = './sprites.png';
 
@@ -34,6 +30,16 @@ const chao = {
         },
 }
 
+function fazColisao(flappyBird,chao){
+    const flappyBirdY = flappyBird.posicaoy + flappyBird.altura;
+    const chaoY = chao.posicaoy;
+    if(flappyBirdY >= chaoY){
+        return true;
+    } else {
+        return false;
+    }
+};
+
 const flappyBird ={
     spriteX:0,
     spriteY:0,
@@ -46,9 +52,14 @@ const flappyBird ={
     pulo: 4.6,
     pula(){
         console.log('Pulinho do Raul Gil');
-        flappyBird.velocidade = -flappyBird.pulo;
+        flappyBird.velocidade =-flappyBird.pulo;
     },
     atualiza() {
+        if(fazColisao(flappyBird,chao)){
+            console.log("Colidiu");
+            mudaParaTela(Telas.INICIO);
+            return;
+        };
         flappyBird.velocidade = flappyBird.velocidade + flappyBird.gravidade;
         flappyBird.posicaoy = flappyBird.posicaoy + flappyBird.velocidade;
     },    
