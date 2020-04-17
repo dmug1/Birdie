@@ -9,31 +9,43 @@ som_HIT.src = './efeitos/hit.wav';
 const canvas = document.querySelector('canvas');
 const contexto = canvas.getContext('2d');
 
-const chao = {
-    spriteX: 0,
-    spriteY: 610,
-    largura: 224,
-    altura: 122,
-    posicaox:0,
-    posicaoy: canvas.height -112,
+//chao
+    function criaChao() {
+        const chao = {
+        spriteX: 0,
+        spriteY: 610,
+        largura: 224,
+        altura: 122,
+        posicaox:0,
+        posicaoy: canvas.height -112,
+        atualiza() {
+            const movimentoDoChao = 1;
+            const repeteEm = chao.largura / 2;
+            const movimentacao = chao.posicaox - movimentoDoChao;
+            chao.posicaox = movimentacao % repeteEm;
 
-    desenha(){        
-        contexto.drawImage(
-            sprites,
-            chao.spriteX, chao.spriteY, // Sprite x e Sprite Y
-            chao.largura, chao.altura, //Tamanho da pomba
-            chao.posicaox, chao.posicaoy, // Sprite x e Sprite Y
-            chao.largura, chao.altura,
-        );       
-        contexto.drawImage(
-            sprites,
-            chao.spriteX, chao.spriteY, // Sprite x e Sprite Y
-            chao.largura, chao.altura, //Tamanho da pomba
-            (chao.largura + chao.posicaox), chao.posicaoy, // Sprite x e Sprite Y
-            chao.largura, chao.altura,
-        );        
         },
-}
+
+        desenha(){        
+            contexto.drawImage(
+                sprites,
+                chao.spriteX, chao.spriteY, // Sprite x e Sprite Y
+                chao.largura, chao.altura, //Tamanho da pomba
+                chao.posicaox, chao.posicaoy, // Sprite x e Sprite Y
+                chao.largura, chao.altura,
+            );       
+            contexto.drawImage(
+                sprites,
+                chao.spriteX, chao.spriteY, // Sprite x e Sprite Y
+                chao.largura, chao.altura, //Tamanho da pomba
+                (chao.largura + chao.posicaox), chao.posicaoy, // Sprite x e Sprite Y
+                chao.largura, chao.altura,
+            );        
+        },
+        }
+        return chao;
+    }    
+
 
 function fazColisao(flappyBird,chao){
     const flappyBirdY = flappyBird.posicaoy + flappyBird.altura;
@@ -152,10 +164,11 @@ const Telas = {
     INICIO: {
         inicializa(){
             globais.flappyBird = criaFlappyBird();
+            globais.chao = criaChao();
         },
         desenha(){
             planoDeFundo.desenha();
-            chao.desenha();
+            globais.chao.desenha();
             globais.flappyBird.desenha(); 
             menssagemGetReady.desenha();
         },
@@ -163,6 +176,7 @@ const Telas = {
             mudaParaTela(Telas.JOGO)
         },
         atualiza(){
+            globais.chao.atualiza();            
 
         }
 
