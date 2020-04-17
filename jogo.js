@@ -73,7 +73,7 @@ function criaFlappyBird(){
             flappyBird.velocidade =-flappyBird.pulo;
         },
         atualiza() {
-            if(fazColisao(flappyBird,chao)){
+            if(fazColisao(flappyBird,globais.chao)){
                 console.log("Colidiu");
                 som_HIT.play();
                 setTimeout(() => {
@@ -185,7 +185,7 @@ const Telas = {
     JOGO: {
         desenha(){
             planoDeFundo.desenha();
-            chao.desenha();
+            globais.chao.desenha();
             globais.flappyBird.desenha(); 
         },
         click(){
