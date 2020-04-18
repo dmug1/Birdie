@@ -1,4 +1,5 @@
 /* feito com o tutorial do dev soutinho no yt*/
+let frames = 0;
 
 const sprites = new Image();
 sprites.src = './sprites.png';
@@ -84,11 +85,31 @@ function criaFlappyBird(){
             };
             flappyBird.velocidade = flappyBird.velocidade + flappyBird.gravidade;
             flappyBird.posicaoy = flappyBird.posicaoy + flappyBird.velocidade;
-        },    
+        },
+        movimentos: [
+            {spriteX: 0, spriteY: 0, },
+            {spriteX: 0, spriteY: 26, },
+            {spriteX: 0, spriteY: 52, },
+        ],    
+        frameAtual:0,
+        atualizaOFrameAtual(){
+            const intervaloDeFrames = 10;
+            const passouIntervalo = frames % intervaloDeFrames === 0;
+            console.log('passouIntervalo: ' + passouIntervalo);
+            if(passouIntervalo){
+                const baseDoIncremento = 1;
+                const incremento = baseDoIncremento + flappyBird.frameAtual;
+                const baseRepeticao = flappyBird.movimentos.length;
+                flappyBird.frameAtual = incremento % baseRepeticao;
+
+            }
+        },
         desenha(){        
+            flappyBird.atualizaOFrameAtual();
+            const { spriteX, spriteY } = flappyBird.movimentos[flappyBird.frameAtual];
             contexto.drawImage(
                 sprites,
-                flappyBird.spriteX, flappyBird.spriteY, // Sprite x e Sprite Y
+                spriteX, spriteY, // Sprite x e Sprite Y
                 flappyBird.largura, flappyBird.altura, //Tamanho da pomba
                 flappyBird.posicaox, flappyBird.posicaoy, // Sprite x e Sprite Y
                 flappyBird.largura, flappyBird.altura,
@@ -201,7 +222,7 @@ const Telas = {
 function loopAnimation() {
     telaAtiva.desenha();
     telaAtiva.atualiza();
-
+    frames = frames+1;
     requestAnimationFrame(loopAnimation);
 };
 
